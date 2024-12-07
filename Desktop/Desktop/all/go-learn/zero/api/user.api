@@ -1,0 +1,53 @@
+syntax = "v1"
+
+info (
+	time: "12/6/23.18"
+	desc: "回顾"
+)
+
+type (
+	GetUserInfoReq {
+		Id int64 `form:"id"`
+	}
+	GetUserInfoResp {
+		Id   int64  `json:"id"`
+		Name string `json:"name"`
+	}
+	UpdateUserReq {
+		Id   int64  `json:"id"`
+		Name string `json:"name"`
+	}
+	UpdateUserResp {
+		flag bool `json:"flag"`
+	}
+)
+
+type (
+	CreateUserReq {
+		Mobile string `json:"mobile"`
+		Name   string `json:"name"'`
+	}
+	CreateUserResp {
+		Flag bool `json:"flag"`
+	}
+)
+
+@server (
+	//      group:  user
+	prefix:     userapi/v1
+	middleware: TestMiddleware
+)
+service user-api {
+	@doc "获取用户信息"
+	@handler userInfo
+	get /user/info (GetUserInfoReq) returns (GetUserInfoResp)
+
+	@doc "修改用户信息"
+	@handler userUpdate
+	post /user/update (UpdateUserReq) returns (UpdateUserResp)
+
+	@doc "创建用户"
+	@handler userCreate
+	post /user/create (CreateUserReq) returns (CreateUserResp)
+}
+
